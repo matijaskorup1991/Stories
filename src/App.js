@@ -8,11 +8,15 @@ const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
 function App() {
   const useSemiPersistantState = (key, initialState) => {
+    const isMounted = useRef(false);
     const [value, setValue] = useState(
       localStorage.getItem(key) || initialState
     );
 
     useEffect(() => {
+      if (!isMounted.current) {
+        isMounted.current = true;
+      }
       localStorage.setItem(key, value);
     }, [value, key]);
 
@@ -76,14 +80,14 @@ function App() {
   );
 }
 
-function List({ list, onRemoveItem }) {
+const List = React.memo(({ list, onRemoveItem }) => {
   return (
     list &&
     list.map((item) => (
       <Item key={item.objectID} item={item} onRemoveItem={onRemoveItem} />
     ))
   );
-}
+});
 
 function Item({ item, onRemoveItem }) {
   return (
