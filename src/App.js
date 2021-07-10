@@ -54,11 +54,11 @@ function App() {
   //   setSearchTerm(e.target.value);
   // }
 
-  function handleRemoveStory(item) {
+  const handleRemoveStory = useCallback((item) => {
     const newStories =
       stories && stories.filter((story) => story.objectID !== item.objectID);
     setStories(newStories);
-  }
+  }, []);
 
   const searchedStories =
     stories &&
